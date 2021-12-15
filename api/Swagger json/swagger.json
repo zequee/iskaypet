@@ -1,0 +1,185 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "Crea una nueva mascota, lista las mascotas y genera indicadores de promedio y desviacion estandar",
+    "version": "1.0.0",
+    "title": "Pets API"
+  },
+  "tags": [
+    {
+      "name": "pet",
+      "description": "Everything about your Pets"
+    }
+  ],
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/": {
+      "post": {
+        "200": {
+          "description": "Se guardo la nueva mascota en la BD"
+        },
+        "500": {
+          "description": "Error en el request captado por el catch"
+        },
+        "tags": [
+          "pet"
+        ],
+        "summary": "Inserta los datos requeridos de una nueva mascota en la coleccion pets  y tambien guarda en la coleccion maximums su maximo correspondiente segun su especie",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "species": "body",
+            "gender": "body",
+            "age": "body",
+            "dateBirth": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pets"
+            }
+          }
+        ],
+        "responses": null
+      }
+    },
+    "/lismascotas": {
+      "get": {
+        "tags": [
+          "pet"
+        ],
+        "summary": "Retorna la coleccion de mascotas",
+        "parameters": {
+          "in": "query",
+          "required": true,
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/pets"
+          },
+          "collectionFormat": "multi"
+        },
+        "responses": {
+          "200": {
+            "description": "Se lista la coleccion correctamente",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/pets"
+              }
+            }
+          },
+          "500": {
+            "description": "No se listo correctamente"
+          }
+        }
+      }
+    },
+    "/pets/{specie}": {
+      "get": {
+        "tags": [
+          "pet"
+        ],
+        "summary": "Busca una determinada especie para calcular el promedio y la desviacion estandar",
+        "parameters": [
+          {
+            "species": "species",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "items": {
+              "type": "string",
+              "enum": [
+                "Mamifero",
+                "Ave",
+                "Pez",
+                "Insecto"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "calculo exitosamente y devuelve los resultados",
+            "schema": {
+              "$ref": "#/definitions/pets"
+            }
+          },
+          "500": {
+            "description": "No se hizo el calculo correctamente"
+          }
+        }
+      }
+    },
+    "/quantity": {
+      "get": {
+        "tags": [
+          "pet"
+        ],
+        "summary": "Retorna la coleccion maximums con el maximo de cada especie",
+        "parameters": {
+          "in": "query",
+          "required": true,
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/pets"
+          },
+          "collectionFormat": "multi"
+        },
+        "responses": {
+          "200": {
+            "description": "Se lista la coleccion correctamente",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/pets"
+              }
+            }
+          },
+          "500": {
+            "description": "No se listo correctamente"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "pets": {
+      "type": "object",
+      "required": [
+        "name",
+        "species",
+        "gender",
+        "age",
+        "dateBirth"
+      ],
+      "properties": {
+        "_id": {
+          "type": "string",
+          "example": "61b76d7ef4ec032c95865957"
+        },
+        "name": {
+          "type": "string",
+          "example": "Boby"
+        },
+        "species": {
+          "type": "string",
+          "example": "Mamifero"
+        },
+        "gender": {
+          "type": "string",
+          "example": "Masculino"
+        },
+        "age": {
+          "type": "integer",
+          "format": "int64",
+          "example": "1"
+        },
+        "dateBirth": {
+          "type": "string",
+          "example": "Mamifero"
+        }
+      }
+    }
+  }
+}
